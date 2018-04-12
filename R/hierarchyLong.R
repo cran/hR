@@ -10,6 +10,7 @@
 #' @param ee A list of values representing employees (e.g. employee IDs).
 #' @param supv A list of values representing the supervisors of the employees. These values should be
 #' of the same type as the employee values.
+#' @param printTree Logical indicator to print the calculated data tree to the console.
 #' @import reshape2 data.tree
 #' @export
 #' @return data frame
@@ -18,7 +19,7 @@
 #' supv = c("Julie","Julie","Susan","George")
 #' hierarchyLong(ee,supv)
 
-hierarchyLong = function(ee,supv){
+hierarchyLong = function(ee,supv,printTree=TRUE){
 
   if(is.factor(ee)) ee = as.character(ee)
   if(is.factor(supv)) supv = as.character(supv)
@@ -29,8 +30,11 @@ hierarchyLong = function(ee,supv){
   }else{
     df = data.frame(ee,supv,stringsAsFactors=F)
     tree = FromDataFrameNetwork(df)
-    print("The hierarchy structure:")
-    lev = max(print(tree,by="level")[,2])
+    lev = max(tree$Get("level"))
+    if(printTree==T){
+      print("The hierarchy structure:")
+      print(tree,"level")
+    }
     if(lev>2){
       for(i in 3:lev){
         df[,i] = ""
@@ -48,6 +52,7 @@ hierarchyLong = function(ee,supv){
     colnames(df) = c("Employee","Level","Supervisor")
     df = df[!is.na(df$Supervisor),]
     df = df[order(df$Employee,df$Level),]
+    row.names(df) = NULL
     return(df)
   }
 }

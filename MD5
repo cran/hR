@@ -1,11 +1,7 @@
-d6252967f18a7ebdfd27161c5fbc4e69 *DESCRIPTION
-2092dc739a933e388a21b046025e08fe *NAMESPACE
-57e8b6dbf7c11f75d53bdcbcd2e4b7d7 *R/hierarchyLong.R
-960be715d4151150555419211565f40a *R/hierarchyWide.R
-ed23c12d2ecb688858f84564490c9933 *R/idPad.R
-7fc303345dbb5c53fdcdbd0145c90d20 *R/visRoleChanges.R
+69237beb6ad118ad628a6503943fa6cc *DESCRIPTION
+0e5d947fab89fbcb82a3cb622c7f4ac4 *NAMESPACE
+ef9fbe203b4ad1524df054d7cc7ff83d *R/hierarchyLong.R
+2010ca4f83779bcc49980a4f94c2e8ed *R/hierarchyWide.R
 d850b675784972f616b8c68ccd31b9ea *README.md
-d1488cfa4dcf179bc8e1f389229ad8cd *man/hierarchyLong.Rd
-937ae00bf42be756fb8aa3943e2e7d64 *man/hierarchyWide.Rd
-e8624253b1759150c8c9515c24350258 *man/idPad.Rd
-5f479e17c01d961ced8e615d333db9b2 *man/visRoleChanges.Rd
+e2a6ae72de53f3fd9fc7e5d8641558ed *man/hierarchyLong.Rd
+bbd762f9337cf1e22d1b8daca8c5460b *man/hierarchyWide.Rd

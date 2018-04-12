@@ -4,13 +4,15 @@
 \alias{hierarchyWide}
 \title{hierarchyWide}
 \usage{
-hierarchyWide(ee, supv)
+hierarchyWide(ee, supv, printTree = TRUE)
 }
 \arguments{
 \item{ee}{A list of values representing employees (e.g. employee IDs).}
 
 \item{supv}{A list of values representing the supervisors of the employees. These values should be
 of the same type as the employee values.}
+
+\item{printTree}{Logical indicator to print the calculated data tree to the console.}
 }
 \value{
 data frame
