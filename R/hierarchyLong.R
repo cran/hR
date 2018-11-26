@@ -1,3 +1,4 @@
+
 #' @title hierarchyLong
 #' @description This function takes employee and supervisor
 #' identifiers (name, ID, etc.) and returns a long data frame consisting of
@@ -10,16 +11,15 @@
 #' @param ee A list of values representing employees (e.g. employee IDs).
 #' @param supv A list of values representing the supervisors of the employees. These values should be
 #' of the same type as the employee values.
-#' @param printTree Logical indicator to print the calculated data tree to the console.
-#' @import reshape2 data.tree
+#' @import data.tree data.table
 #' @export
 #' @return data frame
 #' @examples
-#' ee = c("Dale","Bob","Julie","Susan")
-#' supv = c("Julie","Julie","Susan","George")
+#' ee = c("Dale","Bob","Jill","Mark","Julie","Andrea","Susan")
+#' supv = c("Julie","Julie","Julie","Andrea","Susan","Susan","George")
 #' hierarchyLong(ee,supv)
 
-hierarchyLong = function(ee,supv,printTree=TRUE){
+hierarchyLong = function(ee,supv){
 
   if(is.factor(ee)) ee = as.character(ee)
   if(is.factor(supv)) supv = as.character(supv)
@@ -29,30 +29,32 @@ hierarchyLong = function(ee,supv,printTree=TRUE){
     stop("Employee and supervisor inputs are of different lengths.")
   }else{
     df = data.frame(ee,supv,stringsAsFactors=F)
-    tree = FromDataFrameNetwork(df)
-    lev = max(tree$Get("level"))
-    if(printTree==T){
-      print("The hierarchy structure:")
-      print(tree,"level")
-    }
-    if(lev>2){
-      for(i in 3:lev){
-        df[,i] = ""
-      }
-      for(w in 3:lev){
-        for(i in 1:nrow(df)){
-          x = df$supv[df$ee==df[i,w-1]]
-          df[i,w] = ifelse(length(x)>0,x,NA)
+    tryCatch(
+      {tree = FromDataFrameNetwork(df)},
+      error=function(cond){
+        message("The network is not a tree! Make sure the data reflects complete, unbroken tree of employees and supervisors.")
+        },
+      finally={
+        if(tree$height>2){
+          x = 3:tree$height
+          df[,x] = ""
+          for(w in x){
+            for(i in 1:nrow(df)){
+              y = df$supv[df$ee==df[i,w-1]]
+              df[i,w] = ifelse(length(y)>0,y,NA)
+            }
+          }
         }
+        z = 2:ncol(df)
+        colnames(df)[z] = z-1
+        df = as.data.table(df)
+        df = melt.data.table(df,id.vars=1)
+        colnames(df) = c("Employee","Level","Supervisor")
+        df = df[!is.na(df$Supervisor)]
+        df = df[order(df$Employee,df$Level)]
+        df = as.data.frame(df)
+        return(df)
       }
-    }
-    z = 2:ncol(df)
-    colnames(df)[z] = z-1
-    df = melt(df,id=1)
-    colnames(df) = c("Employee","Level","Supervisor")
-    df = df[!is.na(df$Supervisor),]
-    df = df[order(df$Employee,df$Level),]
-    row.names(df) = NULL
-    return(df)
+      )
   }
 }

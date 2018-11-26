@@ -1,7 +1,7 @@
-69237beb6ad118ad628a6503943fa6cc *DESCRIPTION
-0e5d947fab89fbcb82a3cb622c7f4ac4 *NAMESPACE
-ef9fbe203b4ad1524df054d7cc7ff83d *R/hierarchyLong.R
-2010ca4f83779bcc49980a4f94c2e8ed *R/hierarchyWide.R
+ea60d8894aa584bec010666c83d8fb56 *DESCRIPTION
+655a5e1e6065dac9ce8dca7b5c627868 *NAMESPACE
+e41f5e67a826be89af7431c70bc6f438 *R/hierarchyLong.R
+fb90bea897a8af181b41b188b07489e6 *R/hierarchyWide.R
 d850b675784972f616b8c68ccd31b9ea *README.md
-e2a6ae72de53f3fd9fc7e5d8641558ed *man/hierarchyLong.Rd
-bbd762f9337cf1e22d1b8daca8c5460b *man/hierarchyWide.Rd
+77e79ba02c1db94db470dccdd2ae42aa *man/hierarchyLong.Rd
+730796d251f51c9ec1537d78b305b7ab *man/hierarchyWide.Rd

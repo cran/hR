@@ -2,5 +2,5 @@
 
 export(hierarchyLong)
 export(hierarchyWide)
+import(data.table)
 import(data.tree)
-import(reshape2)

@@ -4,15 +4,13 @@
 \alias{hierarchyLong}
 \title{hierarchyLong}
 \usage{
-hierarchyLong(ee, supv, printTree = TRUE)
+hierarchyLong(ee, supv)
 }
 \arguments{
 \item{ee}{A list of values representing employees (e.g. employee IDs).}
 
 \item{supv}{A list of values representing the supervisors of the employees. These values should be
 of the same type as the employee values.}
-
-\item{printTree}{Logical indicator to print the calculated data tree to the console.}
 }
 \value{
 data frame
@@ -27,7 +25,7 @@ part of the workforce that directly and indirectly reports up through
 a particular leader.
 }
 \examples{
-ee = c("Dale","Bob","Julie","Susan")
-supv = c("Julie","Julie","Susan","George")
+ee = c("Dale","Bob","Jill","Mark","Julie","Andrea","Susan")
+supv = c("Julie","Julie","Julie","Andrea","Susan","Susan","George")
 hierarchyLong(ee,supv)
 }
