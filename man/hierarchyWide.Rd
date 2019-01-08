@@ -7,24 +7,23 @@
 hierarchyWide(ee, supv)
 }
 \arguments{
-\item{ee}{A list of values representing employees (e.g. employee IDs).}
+\item{ee}{An array containing unique identifers for employees.}
 
-\item{supv}{A list of values representing the supervisors of the employees. These values should be
+\item{supv}{An array containing unique identifiers for supervisors. These values should be
 of the same type as the employee values.}
 }
 \value{
 data frame
 }
 \description{
-This function takes employee and supervisor
-identifiers (name, ID, etc.) and returns a wide data frame consisting of
-a single row per employee and their respective reporting hierarchy in a wide format.
-
-The resulting format is very useful for subsequent aggregation of employee data
-for a particular leadership tree.
+The hierarchyWide function transforms a standard set of unique employee and supervisor
+identifiers (employee IDs, email addresses, etc.) into a wide format that can be used to aggregate 
+employee data by a particular line of leadership (i.e. include everyone who rolls up to Susan). The 
+function returns a wide data frame with a column for every level in the hierarchy, 
+starting from the top of the tree (i.e. "Supv1" is likely the CEO in your organization).
 }
 \examples{
-ee = c("Dale","Bob","Jill","Mark","Julie","Andrea","Susan")
-supv = c("Julie","Julie","Julie","Andrea","Susan","Susan","George")
+ee = c("Dale@hR.com","Bob@hR.com","Julie@hR.com","Andrea@hR.com")
+supv = c("Julie@hR.com","Julie@hR.com","Andrea@hR.com","Susan@hR.com")
 hierarchyWide(ee,supv)
 }
