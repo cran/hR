@@ -1,4 +1,4 @@
-7ad91f03cdd427075fbaa9397231fe5b *DESCRIPTION
+3ef9fa0d68abc4315dd5af5d22d68a2c *DESCRIPTION
 3c7e4a9e074e08e55d685b11cca8a6f0 *NAMESPACE
 e77525427241a9169eefb1a31fec8925 *R/hierarchyLong.R
 619867a3b30da6ec6e6da9cb62c6c9a0 *R/hierarchyWide.R
@@ -7,9 +7,8 @@ a7d9ebd53becdde662c0ad7645e1444a *R/workforcePlan.R
 dcfc40a9bac1f6b728f0bc59716f27ef *build/vignette.rds
 0cfb9150af327645eb3dd6c154b90f3a *inst/doc/hR.R
 447f10f96d8b6e8afcfaff495111f814 *inst/doc/hR.Rmd
-7cfd1926180264a58baff39d94c472ea *inst/doc/hR.html
-14015466c3c1634b1727fb18b8dbbdc5 *inst/workforcePlanApp/app.R
-838c4935c1d3e2cafcc1c1dd2061d99e *inst/workforcePlanApp/rsconnect/shinyapps.io/dalekube/workforcePlanApp.dcf
+141d3d7443ec39441916df6e384de5ee *inst/doc/hR.html
+3d869db0f5d9cc304c10d94239c7fcd1 *inst/workforcePlanApp/app.R
 3249cbb419d91a0f35dbaedcd29b13ac *man/hierarchyLong.Rd
 c88499fa168d67d676b9f3c0e4aa3e27 *man/hierarchyWide.Rd
 3cdfb4bb24d025943eda441fd275785b *man/workforcePlan.Rd

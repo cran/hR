@@ -1,7 +1,7 @@
 Package: hR
 Type: Package
 Title: Toolkit for Data Analytics in Human Resources
-Version: 0.1.8
+Version: 0.1.9
 Author: Dale Kube [aut, cre]
 Authors@R: person("Dale","Kube",email="dkube@uwalumni.com",role=c("aut","cre"))
 Maintainer: Dale Kube <dkube@uwalumni.com>
@@ -18,6 +18,6 @@ Imports: data.tree, data.table, shiny, rhandsontable, knitr
 Suggests: rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2019-03-24 16:22:16 UTC; dale
+Packaged: 2019-04-29 01:28:45 UTC; dale
 Repository: CRAN
-Date/Publication: 2019-03-24 16:40:03 UTC
+Date/Publication: 2019-04-29 04:30:04 UTC
