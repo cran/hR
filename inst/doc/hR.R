@@ -5,25 +5,36 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
+## ----workforceHistory----------------------------------------------------
+data("workforceHistory")
+
+# Reduce to DATE <= today to exclude future-dated records
+dt = workforceHistory[DATE<=Sys.Date()]
+
+# Reduce to max DATE and SEQ per person
+dt = dt[dt[,.I[which.max(DATE)],by=.(EMPLID)]$V1]
+dt = dt[dt[,.I[which.max(SEQ)],by=.(EMPLID,DATE)]$V1]
+
+# Only consider workers who are currently active
+# This provides a reliable 'headcount' data set that reflects today's active workforce
+dt = dt[STATUS=="Active"]
+
+# Exclude the CEO because she does not have a supervisor
+CEO = dt[TITLE=="CEO",EMPLID]
+dt = dt[EMPLID!=CEO]
+
 ## ----hierarchyLong-------------------------------------------------------
-ee = c("Dale@hR.com","Bob@hR.com","Julie@hR.com","Andrea@hR.com")
-supv = c("Julie@hR.com","Julie@hR.com","Andrea@hR.com","Susan@hR.com")
-df = hierarchyLong(ee,supv)
-print(df)
+# Use the hierarchyLong() function to produce an elongated hierarchy data.table
+hLong = hierarchyLong(dt$EMPLID,dt$SUPVID)
+print(hLong)
 
-# How many employees report up through Susan?
-nrow(df[df$Supervisor=="Susan@hR.com",])
-
-# Who reports up through Susan?
-df[df$Supervisor=="Susan@hR.com",]
+# Who reports up through Susan? (direct and indirect reports)
+hLong[Supervisor==CEO]
 
 ## ----hierarchyWide-------------------------------------------------------
-df = hierarchyWide(ee,supv)
-print(df)
+hWide = hierarchyWide(dt$EMPLID,dt$SUPVID)
+print(hWide)
 
-# How many employees report up through Susan?
-sum(df$Supv1=="Susan@hR.com",na.rm=T)
-
-# Who reports up through Susan?
-df[which(df$Supv1=="Susan@hR.com"),]
+# Who reports up through Pablo? (direct and indirect reports)
+hWide[Supv2==199827]
 
