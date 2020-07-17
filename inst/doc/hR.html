@@ -1,28 +1,44 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Dale Kube" />
 
-<meta name="date" content="2019-11-09" />
+<meta name="date" content="2020-07-16" />
 
 <title>hR: Toolkit for Data Analytics in Human Resources</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -32,14 +48,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -48,9 +66,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -96,7 +114,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -117,9 +135,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -288,7 +303,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -303,80 +319,127 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">hR: Toolkit for Data Analytics in Human Resources</h1>
 <h4 class="author">Dale Kube</h4>
-<h4 class="date">2019-11-09</h4>
+<h4 class="date">2020-07-16</h4>
 
 
 
-<p>Transform and analyze workforce data in meaningful ways for human resources (HR) analytics. The use of two transformational functions, ‘hierarchyLong’ and ‘hierarchyWide’, are demonstrated below. These convert standard employee and supervisor relationship data into useful formats.</p>
+<p>Transform and analyze workforce data in meaningful ways for human resources (HR) analytics. The use of three functions, <code>hierarchyLong</code>, <code>hierarchyWide</code>, and <code>hierarchyStats</code> are demonstrated below. These convert standard employee and supervisor relationship data to useful formats, summary statistics, and span of control metrics.</p>
 <p>Install the package from CRAN by running the <code>install.packages(&quot;hR&quot;)</code> command.</p>
 <div id="workforcehistory-data" class="section level2">
 <h2>workforceHistory data</h2>
-<p>The two examples in this document leverage the sample <code>workforceHistory</code> data set which reflects an artificial organization’s workforce history data. The sample is reduced to a data.table that contains one row per active employee and contractor in order to properly use the <code>hierarchyLong</code> and <code>hierarchyWide</code> functions.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">data</span>(<span class="st">&quot;workforceHistory&quot;</span>)</a>
-<a class="sourceLine" id="cb1-2" title="2"></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="co"># Reduce to DATE &lt;= today to exclude future-dated records</span></a>
-<a class="sourceLine" id="cb1-4" title="4">dt =<span class="st"> </span>workforceHistory[DATE<span class="op">&lt;=</span><span class="kw">Sys.Date</span>()]</a>
-<a class="sourceLine" id="cb1-5" title="5"></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="co"># Reduce to max DATE and SEQ per person</span></a>
-<a class="sourceLine" id="cb1-7" title="7">dt =<span class="st"> </span>dt[dt[,.I[<span class="kw">which.max</span>(DATE)],by=.(EMPLID)]<span class="op">$</span>V1]</a>
-<a class="sourceLine" id="cb1-8" title="8">dt =<span class="st"> </span>dt[dt[,.I[<span class="kw">which.max</span>(SEQ)],by=.(EMPLID,DATE)]<span class="op">$</span>V1]</a>
-<a class="sourceLine" id="cb1-9" title="9"></a>
-<a class="sourceLine" id="cb1-10" title="10"><span class="co"># Only consider workers who are currently active</span></a>
-<a class="sourceLine" id="cb1-11" title="11"><span class="co"># This provides a reliable &#39;headcount&#39; data set that reflects today&#39;s active workforce</span></a>
-<a class="sourceLine" id="cb1-12" title="12">dt =<span class="st"> </span>dt[STATUS<span class="op">==</span><span class="st">&quot;Active&quot;</span>]</a>
-<a class="sourceLine" id="cb1-13" title="13"></a>
-<a class="sourceLine" id="cb1-14" title="14"><span class="co"># Exclude the CEO because she does not have a supervisor</span></a>
-<a class="sourceLine" id="cb1-15" title="15">CEO =<span class="st"> </span>dt[TITLE<span class="op">==</span><span class="st">&quot;CEO&quot;</span>,EMPLID]</a>
-<a class="sourceLine" id="cb1-16" title="16">dt =<span class="st"> </span>dt[EMPLID<span class="op">!=</span>CEO]</a></code></pre></div>
+<p>The examples in this vignette use the sample <code>workforceHistory</code> data set which reflects an artificial organization’s workforce history data. The sample is reduced to a data.table containing one row per active employee and contractor in order to properly use the subsequent functions.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">data</span>(<span class="st">&quot;workforceHistory&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co"># Reduce to DATE &lt;= today to exclude future-dated records</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>dt =<span class="st"> </span>workforceHistory[DATE<span class="op">&lt;=</span><span class="kw">Sys.Date</span>()]</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co"># Reduce to max DATE and SEQ per person</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>dt =<span class="st"> </span>dt[dt[,.I[<span class="kw">which.max</span>(DATE)],by=.(EMPLID)]<span class="op">$</span>V1]</span>
+<span id="cb1-8"><a href="#cb1-8"></a>dt =<span class="st"> </span>dt[dt[,.I[<span class="kw">which.max</span>(SEQ)],by=.(EMPLID,DATE)]<span class="op">$</span>V1]</span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co"># Only consider workers who are currently active</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co"># This provides a reliable &#39;headcount&#39; data set that reflects today&#39;s active workforce</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>dt =<span class="st"> </span>dt[STATUS<span class="op">==</span><span class="st">&quot;Active&quot;</span>]</span>
+<span id="cb1-13"><a href="#cb1-13"></a></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="co"># Exclude the CEO because she does not have a supervisor</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a>CEO =<span class="st"> </span>dt[TITLE<span class="op">==</span><span class="st">&quot;CEO&quot;</span>,EMPLID]</span>
+<span id="cb1-16"><a href="#cb1-16"></a>dt =<span class="st"> </span>dt[EMPLID<span class="op">!=</span>CEO]</span>
+<span id="cb1-17"><a href="#cb1-17"></a></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="co"># Show the prepared table</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="co"># This represents an example, active workforce</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="kw">print</span>(dt[,.(EMPLID,NAME,TITLE,SUPVID)])</span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="co">#&gt;    EMPLID    NAME     TITLE SUPVID</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a><span class="co">#&gt; 1: 131356  George   Analyst 199827</span></span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="co">#&gt; 2: 199827   Pablo  Director 111355</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a><span class="co">#&gt; 3: 534441 Rebekah   Analyst 199827</span></span>
+<span id="cb1-25"><a href="#cb1-25"></a><span class="co">#&gt; 4: 199901 Enrique Associate 199827</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a><span class="co">#&gt; 5: 268831 Hillary    Intern 131356</span></span></code></pre></div>
 </div>
 <div id="hierarchylong" class="section level2">
 <h2>hierarchyLong</h2>
 <p>The <code>hierarchyLong</code> function transforms a standard set of unique employee and supervisor identifiers (employee IDs, email addresses, etc.) into an elongated format that can be used to aggregate employee data by a particular line of leadership (i.e. include everyone who rolls up to Susan). The function returns a long data.table consisting of one row per employee for every supervisor above them, up to the top of the tree. The levels represent the number of supervisors from the employee (starting with “1” for an employee’s direct supervisor).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># Use the hierarchyLong() function to produce an elongated hierarchy data.table</span></a>
-<a class="sourceLine" id="cb2-2" title="2">hLong =<span class="st"> </span><span class="kw">hierarchyLong</span>(dt<span class="op">$</span>EMPLID,dt<span class="op">$</span>SUPVID)</a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="kw">print</span>(hLong)</a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="co">#&gt;     Employee Level Supervisor</span></a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="co">#&gt;  1:   131356     1     199827</span></a>
-<a class="sourceLine" id="cb2-6" title="6"><span class="co">#&gt;  2:   131356     2     111355</span></a>
-<a class="sourceLine" id="cb2-7" title="7"><span class="co">#&gt;  3:   199827     1     111355</span></a>
-<a class="sourceLine" id="cb2-8" title="8"><span class="co">#&gt;  4:   199901     1     199827</span></a>
-<a class="sourceLine" id="cb2-9" title="9"><span class="co">#&gt;  5:   199901     2     111355</span></a>
-<a class="sourceLine" id="cb2-10" title="10"><span class="co">#&gt;  6:   268831     1     131356</span></a>
-<a class="sourceLine" id="cb2-11" title="11"><span class="co">#&gt;  7:   268831     2     199827</span></a>
-<a class="sourceLine" id="cb2-12" title="12"><span class="co">#&gt;  8:   268831     3     111355</span></a>
-<a class="sourceLine" id="cb2-13" title="13"><span class="co">#&gt;  9:   534441     1     199827</span></a>
-<a class="sourceLine" id="cb2-14" title="14"><span class="co">#&gt; 10:   534441     2     111355</span></a>
-<a class="sourceLine" id="cb2-15" title="15"></a>
-<a class="sourceLine" id="cb2-16" title="16"><span class="co"># Who reports up through Susan? (direct and indirect reports)</span></a>
-<a class="sourceLine" id="cb2-17" title="17">hLong[Supervisor<span class="op">==</span>CEO]</a>
-<a class="sourceLine" id="cb2-18" title="18"><span class="co">#&gt;    Employee Level Supervisor</span></a>
-<a class="sourceLine" id="cb2-19" title="19"><span class="co">#&gt; 1:   131356     2     111355</span></a>
-<a class="sourceLine" id="cb2-20" title="20"><span class="co">#&gt; 2:   199827     1     111355</span></a>
-<a class="sourceLine" id="cb2-21" title="21"><span class="co">#&gt; 3:   199901     2     111355</span></a>
-<a class="sourceLine" id="cb2-22" title="22"><span class="co">#&gt; 4:   268831     3     111355</span></a>
-<a class="sourceLine" id="cb2-23" title="23"><span class="co">#&gt; 5:   534441     2     111355</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>hLong =<span class="st"> </span><span class="kw">hierarchyLong</span>(dt<span class="op">$</span>EMPLID,dt<span class="op">$</span>SUPVID)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">print</span>(hLong)</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt;     Employee Level Supervisor</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt;  1:   131356     1     199827</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt;  2:   131356     2     111355</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt;  3:   199827     1     111355</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt;  4:   199901     1     199827</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt;  5:   199901     2     111355</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt;  6:   268831     1     131356</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="co">#&gt;  7:   268831     2     199827</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt;  8:   268831     3     111355</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="co">#&gt;  9:   534441     1     199827</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="co">#&gt; 10:   534441     2     111355</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="co"># Who reports up through Susan? (direct and indirect reports)</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="kw">print</span>(hLong[Supervisor<span class="op">==</span>CEO])</span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="co">#&gt;    Employee Level Supervisor</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt; 1:   131356     2     111355</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a><span class="co">#&gt; 2:   199827     1     111355</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="co">#&gt; 3:   199901     2     111355</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="co">#&gt; 4:   268831     3     111355</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a><span class="co">#&gt; 5:   534441     2     111355</span></span></code></pre></div>
 </div>
 <div id="hierarchywide" class="section level2">
 <h2>hierarchyWide</h2>
 <p>The <code>hierarchyWide</code> function transforms a standard set of unique employee and supervisor identifiers (employee IDs, email addresses, etc.) into a wide format that can be used to aggregate employee data by a particular line of leadership (i.e. include everyone who rolls up to Susan). The function returns a wide data.table with a column for every level in the hierarchy, starting from the top of the tree (i.e. “Supv1” is likely the CEO in your organization).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">hWide =<span class="st"> </span><span class="kw">hierarchyWide</span>(dt<span class="op">$</span>EMPLID,dt<span class="op">$</span>SUPVID)</a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="kw">print</span>(hWide)</a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="co">#&gt;    Employee  Supv1  Supv2  Supv3</span></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="co">#&gt; 1:   131356 111355 199827   &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb3-5" title="5"><span class="co">#&gt; 2:   199827 111355   &lt;NA&gt;   &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb3-6" title="6"><span class="co">#&gt; 3:   534441 111355 199827   &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb3-7" title="7"><span class="co">#&gt; 4:   199901 111355 199827   &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb3-8" title="8"><span class="co">#&gt; 5:   268831 111355 199827 131356</span></a>
-<a class="sourceLine" id="cb3-9" title="9"></a>
-<a class="sourceLine" id="cb3-10" title="10"><span class="co"># Who reports up through Pablo? (direct and indirect reports)</span></a>
-<a class="sourceLine" id="cb3-11" title="11">hWide[Supv2<span class="op">==</span><span class="dv">199827</span>]</a>
-<a class="sourceLine" id="cb3-12" title="12"><span class="co">#&gt;    Employee  Supv1  Supv2  Supv3</span></a>
-<a class="sourceLine" id="cb3-13" title="13"><span class="co">#&gt; 1:   131356 111355 199827   &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb3-14" title="14"><span class="co">#&gt; 2:   534441 111355 199827   &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb3-15" title="15"><span class="co">#&gt; 3:   199901 111355 199827   &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb3-16" title="16"><span class="co">#&gt; 4:   268831 111355 199827 131356</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>hWide =<span class="st"> </span><span class="kw">hierarchyWide</span>(dt<span class="op">$</span>EMPLID,dt<span class="op">$</span>SUPVID)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">print</span>(hWide)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co">#&gt;    Employee  Supv1  Supv2  Supv3</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#&gt; 1:   131356 111355 199827   &lt;NA&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt; 2:   199827 111355   &lt;NA&gt;   &lt;NA&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt; 3:   534441 111355 199827   &lt;NA&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="co">#&gt; 4:   199901 111355 199827   &lt;NA&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="co">#&gt; 5:   268831 111355 199827 131356</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="co"># Who reports up through Pablo? (direct and indirect reports)</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="kw">print</span>(hWide[Supv2<span class="op">==</span><span class="dv">199827</span>])</span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="co">#&gt;    Employee  Supv1  Supv2  Supv3</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="co">#&gt; 1:   131356 111355 199827   &lt;NA&gt;</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="co">#&gt; 2:   534441 111355 199827   &lt;NA&gt;</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="co">#&gt; 3:   199901 111355 199827   &lt;NA&gt;</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="co">#&gt; 4:   268831 111355 199827 131356</span></span></code></pre></div>
+</div>
+<div id="hierarchystats" class="section level2">
+<h2>hierarchyStats</h2>
+<p>The <code>hierarchyStats</code> function computes summary statistics and span of control metrics from a standard set of unique employee and supervisor identifiers (employee IDs, email addresses, etc.). The resulting metrics and table are accessible from a list object.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>hStats =<span class="st"> </span><span class="kw">hierarchyStats</span>(dt<span class="op">$</span>EMPLID,dt<span class="op">$</span>SUPVID)</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co"># Total Levels:</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="kw">print</span>(hStats<span class="op">$</span>levelsCount<span class="op">$</span>value)</span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt; [1] 4</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co"># Total Individual Contributors:</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="kw">print</span>(hStats<span class="op">$</span>individualContributorsCount<span class="op">$</span>value)</span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co"># Total People Managers:</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="kw">print</span>(hStats<span class="op">$</span>peopleManagersCount<span class="op">$</span>value)</span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="co"># Median Direct Reports:</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="kw">print</span>(hStats<span class="op">$</span>medianDirectReports<span class="op">$</span>value)</span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="co">#&gt; [1] 0.5</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="co"># Median Span of Control (Direct and Indirect Reports):</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="kw">print</span>(hStats<span class="op">$</span>medianSpanOfControl<span class="op">$</span>value)</span>
+<span id="cb4-21"><a href="#cb4-21"></a><span class="co">#&gt; [1] 0.5</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a></span>
+<span id="cb4-23"><a href="#cb4-23"></a><span class="co"># Span of Control Table</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a><span class="kw">print</span>(hStats<span class="op">$</span>spanOfControlTable)</span>
+<span id="cb4-25"><a href="#cb4-25"></a><span class="co">#&gt;    Employee directReports spanOfControl</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a><span class="co">#&gt; 1:   111355             1             5</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a><span class="co">#&gt; 2:   131356             1             1</span></span>
+<span id="cb4-28"><a href="#cb4-28"></a><span class="co">#&gt; 3:   199827             3             4</span></span>
+<span id="cb4-29"><a href="#cb4-29"></a><span class="co">#&gt; 4:   199901             0             0</span></span>
+<span id="cb4-30"><a href="#cb4-30"></a><span class="co">#&gt; 5:   268831             0             0</span></span>
+<span id="cb4-31"><a href="#cb4-31"></a><span class="co">#&gt; 6:   534441             0             0</span></span></code></pre></div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

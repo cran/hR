@@ -1,11 +1,11 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 library(hR)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ----workforceHistory----------------------------------------------------
+## ----workforceHistory---------------------------------------------------------
 data("workforceHistory")
 
 # Reduce to DATE <= today to exclude future-dated records
@@ -23,18 +23,42 @@ dt = dt[STATUS=="Active"]
 CEO = dt[TITLE=="CEO",EMPLID]
 dt = dt[EMPLID!=CEO]
 
-## ----hierarchyLong-------------------------------------------------------
-# Use the hierarchyLong() function to produce an elongated hierarchy data.table
+# Show the prepared table
+# This represents an example, active workforce
+print(dt[,.(EMPLID,NAME,TITLE,SUPVID)])
+
+## ----hierarchyLong------------------------------------------------------------
 hLong = hierarchyLong(dt$EMPLID,dt$SUPVID)
 print(hLong)
 
 # Who reports up through Susan? (direct and indirect reports)
-hLong[Supervisor==CEO]
+print(hLong[Supervisor==CEO])
 
-## ----hierarchyWide-------------------------------------------------------
+## ----hierarchyWide------------------------------------------------------------
 hWide = hierarchyWide(dt$EMPLID,dt$SUPVID)
 print(hWide)
 
 # Who reports up through Pablo? (direct and indirect reports)
-hWide[Supv2==199827]
+print(hWide[Supv2==199827])
+
+## ----hierarchyStats-----------------------------------------------------------
+hStats = hierarchyStats(dt$EMPLID,dt$SUPVID)
+
+# Total Levels:
+print(hStats$levelsCount$value)
+
+# Total Individual Contributors:
+print(hStats$individualContributorsCount$value)
+
+# Total People Managers:
+print(hStats$peopleManagersCount$value)
+
+# Median Direct Reports:
+print(hStats$medianDirectReports$value)
+
+# Median Span of Control (Direct and Indirect Reports):
+print(hStats$medianSpanOfControl$value)
+
+# Span of Control Table
+print(hStats$spanOfControlTable)
 
