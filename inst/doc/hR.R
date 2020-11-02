@@ -28,14 +28,14 @@ dt = dt[EMPLID!=CEO]
 print(dt[,.(EMPLID,NAME,TITLE,SUPVID)])
 
 ## ----hierarchyLong------------------------------------------------------------
-hLong = hierarchyLong(dt$EMPLID,dt$SUPVID)
+hLong = hierarchy(dt$EMPLID,dt$SUPVID,format="long")
 print(hLong)
 
 # Who reports up through Susan? (direct and indirect reports)
 print(hLong[Supervisor==CEO])
 
 ## ----hierarchyWide------------------------------------------------------------
-hWide = hierarchyWide(dt$EMPLID,dt$SUPVID)
+hWide = hierarchy(dt$EMPLID,dt$SUPVID,format="wide")
 print(hWide)
 
 # Who reports up through Pablo? (direct and indirect reports)
