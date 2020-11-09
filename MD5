@@ -1,7 +1,7 @@
-31ceccbe1264832958b7a379d0922a85 *DESCRIPTION
+68215ad239cb5535e8c7f13a9cdf073c *DESCRIPTION
 549357c0b7e7d412c8193a9fbb0ee85f *NAMESPACE
 d866748eb99f76ef9b30db96e4ec4a22 *R/hierarchy.R
-a1fc37e17cf721ab73548319de60c1d9 *R/hierarchyStats.R
+4d53f62eac25778e1046dbb61192d5c2 *R/hierarchyStats.R
 a03212cd0cd5f49f1b232dd9036bbe1d *R/hierarchyValid.R
 07cead45a324f3e8385aa6d18015c495 *R/workforceHistory.R
 a7d9ebd53becdde662c0ad7645e1444a *R/workforcePlan.R
@@ -10,7 +10,7 @@ a7d9ebd53becdde662c0ad7645e1444a *R/workforcePlan.R
 e04339c8e7c5861c488da4ad7d46d6ef *data/workforceHistory.rda
 c55c0c2199e0d82edcd2c5c4ccb14166 *inst/doc/hR.R
 f1e917a30fb4f7870c23aa293541a77a *inst/doc/hR.Rmd
-6cc39be75dae027ee10378b6283c46c7 *inst/doc/hR.html
+ed4e220c4c93e5a9f26e3cb00c2ef19b *inst/doc/hR.html
 7d270862188e678c85ec6ee4c6800af3 *inst/workforcePlanApp/app.R
 e6a47bea305880432a1cc1542add692e *inst/workforcePlanApp/rsconnect/shinyapps.io/dalekube/workforcePlanApp.dcf
 7983d2e8312a39ce4b7ceadd95ac074d *man/hierarchy.Rd
